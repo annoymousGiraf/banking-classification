@@ -1,0 +1,9 @@
+version: "3"
+services:
+  test:
+    image: openjdk:8
+    working_dir: /root/app
+    volumes:
+      - ./:/root/app
+      - ~/.gradle/:/root/.gradle
+    command: ./ops/test.sh
