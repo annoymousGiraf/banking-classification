@@ -1,9 +1,11 @@
 package transactions.reader
 
+import java.io.File
+
 object InputReaderFactory {
-    fun of(inputType: String): TransactionInputReader =
-        when (inputType) {
-            "csv" -> CSVTransactionReader()
+    fun of(inputFile : File): TransactionInputReader =
+        when (inputFile.extension) {
+            "csv" -> CSVTransactionReader(inputFile.readText())
             else -> throw IllegalArgumentException("unsupported input type")
         }
 

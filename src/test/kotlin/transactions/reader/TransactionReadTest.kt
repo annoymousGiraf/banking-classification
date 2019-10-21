@@ -25,8 +25,7 @@ class TransactionReadTest {
         @Test
         fun `should read one simple CSV transaction line`() {
             //Given
-            val csvLine = arrayOf(oneTransactionLineCSVFormat)
-            val inputReader: TransactionInputReader = InputReaderFactory.of("csv")
+            val inputReader: TransactionInputReader = CSVTransactionReader(oneTransactionLineCSVFormat)
 
             val transactionLine = TransactionLine("TX10001", "ACC334455",
                 "ACC778899", LocalDateTime.parse("20/10/2018 12:47:55" , formatter),
@@ -35,7 +34,8 @@ class TransactionReadTest {
             val expectedTransactionLines = TransactionLines(listOf(transactionLine))
 
             //When
-            val transactions = inputReader.read(csvLine)
+            val transactions = inputReader.read()
+
             //Then
             assertThat(transactions, equalTo(expectedTransactionLines))
         }
