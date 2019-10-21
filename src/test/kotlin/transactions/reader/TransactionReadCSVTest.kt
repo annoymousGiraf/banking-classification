@@ -1,7 +1,8 @@
 package transactions.reader
 
-import junit.framework.TestCase.assertEquals
-import org.junit.Test
+
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import transactions.data.oneTransactionLineCSVFormat
 import transactions.entity.TransactionLine
 import transactions.entity.TransactionLines
@@ -22,7 +23,7 @@ class TransactionReadCSVTest {
         val transactions = inputReader.read(csvLine)
 
         //Then
-        assertEquals( transactions[0] , expectedTransactionLines[0])
+        assertEquals(transactions , expectedTransactionLines)
    }
 
 }

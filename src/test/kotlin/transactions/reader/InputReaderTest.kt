@@ -1,13 +1,16 @@
 package transactions.reader
 
-import junit.framework.TestCase.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+
+
 
 
 class InputReaderTest {
 
     @Test
-    fun inputReaderFactoryCSVTest() {
+    fun `input ReaderFactory should produce CSV reader instance`() {
         //Given
        val inputType = "csv"
 
@@ -18,4 +21,18 @@ class InputReaderTest {
         assertEquals(inputReader.javaClass, CSVTransactionReader().javaClass)
 
     }
+
+    @Test
+    fun `unsupported InputReader Type should throw exception`() {
+        //Given
+        val inputType = "xml"
+
+        //Whet
+        Assertions.assertThrows(IllegalArgumentException::class.java) {  InputReaderFactory.of(inputType) }
+
+
+
+    }
+
+
 }
