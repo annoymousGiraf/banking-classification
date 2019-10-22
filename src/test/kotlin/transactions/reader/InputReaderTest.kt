@@ -1,13 +1,10 @@
 package transactions.reader
 
-import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Test
 import java.io.File
 
-
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class InputReaderTest {
 
 
@@ -26,7 +23,6 @@ class InputReaderTest {
     @Test
     fun `input ReaderFactory should produce CSV reader instance`() {
         //Given
-       val inputType = "csv"
 
         //When
         val inputReader = InputReaderFactory.of(File(testFileName))

@@ -15,7 +15,8 @@ repositories {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation 'com.natpryce:hamkrest:1.7.0.0'
-    implementation 'com.github.doyaaaaaken:kotlin-csv-jvm:0.7.3'
+    compile group: 'org.apache.commons', name: 'commons-csv', version: '1.7'
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.2")
 }
