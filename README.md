@@ -1,12 +1,12 @@
 # banking-classification
 
 
-###Assumptions
+### Assumptions
 
 * On the Example in the PDF the CSV file is missing a `,` if it is a payment i am assuming that the CSV file contains trailing comma any way
 
 
-#####a Fixed CSV will look like:
+##### a Fixed CSV will look like:
 
 ``
 fromAccountId, toAccountId, createdAt, amount, transactionType,relatedTransaction

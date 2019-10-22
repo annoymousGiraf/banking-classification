@@ -1,5 +1,8 @@
 package transactions.query
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import mu.KotlinLogging
 import transactions.entity.RelativeBalance
 import transactions.entity.TransactionLine
 import transactions.entity.TransactionLines
@@ -7,30 +10,38 @@ import transactions.entity.TransactionType
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
+
+
 class TransactionListQuery(val transactions: TransactionLines) {
 
-    fun getCurrentBalance(accountId: String, startDate: LocalDateTime, endDate: LocalDateTime) : RelativeBalance {
+    private val logger = KotlinLogging.logger {}
+
+    fun getCurrentBalance(accountId: String, startDate: LocalDateTime, endDate: LocalDateTime)= runBlocking {
+        logger.debug { "getCurrentBalance(accountId=$accountId,startDate=$startDate,endDate=$endDate)" }
+        check(startDate <= endDate) { "start date $startDate is after end date $endDate" }
+        logger.info { "Start Processing Balance for AccountId=$accountId" }
 
         val transactionForAccountInTimeFrame = getTransactionForTimeFrame(startDate, endDate,
                         getReversedTransactions(accountId))
 
+        logger.info { "found ${transactionForAccountInTimeFrame.size} matching transactions" }
+
         val transactionPaid =
-             getDebitTransaction(transactionForAccountInTimeFrame, accountId)
+             async { getDebitTransaction(transactionForAccountInTimeFrame, accountId)}
 
         val transactionReceived =
-            getCreditTransactions(transactionForAccountInTimeFrame, accountId)
+            async {  getCreditTransactions(transactionForAccountInTimeFrame, accountId) }
 
-        val allTransaction = transactionPaid + transactionReceived
-
+        val allTransaction = transactionPaid.await() + transactionReceived.await()
         val balance = allTransaction
             .asSequence()
             .fold(BigDecimal.ZERO, BigDecimal::add)
 
-        return RelativeBalance(allTransaction.size, balance)
+        RelativeBalance(allTransaction.size, balance)
     }
 
-    private fun getCreditTransactions(
-        transactionForAccountInTimeFrame: List<TransactionLine>, accountId: String): List<BigDecimal> {
+    private fun getCreditTransactions(transactionForAccountInTimeFrame: List<TransactionLine>,
+                                      accountId: String): List<BigDecimal> {
         return transactionForAccountInTimeFrame
             .filter { it.toAccountId == accountId }
             .map { it.amount }
