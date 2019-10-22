@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 
 
 
-class TransactionListQuery(val transactions: TransactionLines) {
+class TransactionListQuery(private val transactions: TransactionLines) {
 
     private val logger = KotlinLogging.logger {}
 
@@ -36,19 +36,22 @@ class TransactionListQuery(val transactions: TransactionLines) {
         val balance = allTransaction
             .asSequence()
             .fold(BigDecimal.ZERO, BigDecimal::add)
-
+        logger.info { "Finish calculating balance" }
+        logger.debug { "Balance = $balance" }
         RelativeBalance(allTransaction.size, balance)
     }
 
     private fun getCreditTransactions(transactionForAccountInTimeFrame: List<TransactionLine>,
                                       accountId: String): List<BigDecimal> {
+        logger.info { "getting credit transactions for account = $accountId" }
         return transactionForAccountInTimeFrame
             .filter { it.toAccountId == accountId }
             .map { it.amount }
     }
 
-    private fun getDebitTransaction(
+    private  fun getDebitTransaction(
         transactionForAccountInTimeFrame: List<TransactionLine>, accountId: String): List<BigDecimal> {
+        logger.info { "getting debit transactions for account = $accountId" }
         return transactionForAccountInTimeFrame
             .filter { it.fromAccountId == accountId }
             .map { it.amount.negate() }

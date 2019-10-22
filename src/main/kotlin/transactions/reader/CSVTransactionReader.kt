@@ -1,5 +1,6 @@
 package transactions.reader
 
+import mu.KotlinLogging
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import transactions.entity.TransactionLine
@@ -12,6 +13,8 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class CSVTransactionReader(fileLines : String) : TransactionInputReader {
+    private val logger = KotlinLogging.logger {}
+
     private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss") //TODO: move to property
 
     private val csvParser = CSVParser(StringReader(fileLines),
@@ -23,7 +26,7 @@ class CSVTransactionReader(fileLines : String) : TransactionInputReader {
     private fun errorReading(colName :String ): Nothing = error("missing column $colName")
 
     override fun read(): TransactionLines {
-
+        logger.info { "reading transaction from CSV file" }
         return TransactionLines(csvParser.records.map {
             TransactionLine(
                 it[TRANSACTION_ID.col] ?: errorReading(TRANSACTION_ID.col),

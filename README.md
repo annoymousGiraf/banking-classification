@@ -18,3 +18,5 @@ TX10005, ACC334455, ACC778899, 21/10/2018 09:30:00, 7.25,PAYMENT,
 `` 
 
 * Amount scale is 2 , means two zeros after the `.` for example `7.25`
+
+* All transaction are on the same time zone
