@@ -1,6 +1,86 @@
 # banking-classification
 
 
+### Local Env And Building
+
+* Using `Docker` and `docker-compose`
+    * `docker-compose run build`
+    * `docker-compose build release`
+    * `docker run banking-classification:latest "<sample from the files in sample folder>" "<account_id>" "<strart_date>" "<end_date>"`
+    
+* Using docker with automate sample run
+    * `./dev-env/build-and-run-sample-with-docker.sh`
+
+
+* Using Java
+    * `./dev-env/run-with-your-args.sh <accountid> <start_date> <end_date>` sample will be take from app folder and be used from the script
+    * build your own and use it `./gradlew clean jar` on the `build` folder under `libs` the jar will be build run it with all the arguments 
+    `java -jar banking-classification-1.0.jar <csv_file> <account_id> <start_date> <end_date>`
+
+running tests
+    * using gradle `./gradlew clean test`
+    * using docker `docker-compose run test`
+    * using intelij or any other IDE
+    
+### Further Work
+in order to not over engineering the task i avoided demonstrated possible features such as
+1. exporting the date format to a property file
+2. running regex on date input
+3. supporting json file - though it is super easy with the given design
+
+### Basic Diagram
+
+```
+                                                            +--------------------+
+                                                            |      Current Balance
+                                                            |                    |
+                                                            +---------+----------+
+                                                                      ^
+                                                                      |
+                                                                      |
+                                           Input File , Account , Star| date, End date
+                                                             +        |
+                                                             |        |
+                                                             |        |
+                                                             |        |
+                                                             |        |
+                                                             |        |
++--------------------+                                       |        |
+|                    | TransactionList      +----------------v--------+------+
+|  Transaction Query +<---------------------+           Application          |
+|  Service           | Dates and Account    |                                |
+|                    |                      |                                |
+|                    | current balance for  |                                |
+|                    +---------------------->                                |
++--------------------+ account              +---------------+-------+--------+
+                                                            |       ^
+                                                            |       |
+                                                            |       | InputReader - read()
+                                                            |       |
+                                                            |       |
+      +---------------------+                               v       |
+      |                     |              +----------------+-------+-----------+            +---------------------+
+      |  JsonInputReader -  |              |                                    |            |  CSVInputReader     |
+      |  Future Development |              |         InputReaderFactory         |            |                     |
+      |                     +<-------------+                                    +----------->+                     |
+      |                     |              |                                    |            |                     |
+      |                     |              |                                    |            |                     |
+      |                     |              +---------------+--------------------+            +---------------------+
+      +---------------------+                              |
+                                                           |
+                                                           |
+                                                           |
+                                              +------------+---------------+
+                                              |   Unsupported Type         |
+                                              |                            |
+                                              |                            |
+                                              |                            |
+                                              |                            |
+                                              +----------------------------+
+
+```
+
+
 ### Assumptions
 
 * On the Example in the PDF the CSV file is missing a `,` if it is a payment i am assuming that the CSV file contains trailing comma any way

@@ -7,3 +7,16 @@ services:
       - ./:/root/app
       - ~/.gradle/:/root/.gradle
     command: ./ops/test.sh
+
+  build:
+    image: openjdk:8
+    working_dir: /root/app
+    volumes:
+      - ./:/root/app
+      - ~/.gradle/:/root/.gradle
+    command: ./gradlew clean jar
+
+  release:
+    build:
+      context: .
+    image: banking-classification

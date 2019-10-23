@@ -15,14 +15,14 @@ import java.time.LocalDateTime
 class TransactionListQuery(private val transactions: TransactionLines) {
 
     private val logger = KotlinLogging.logger {}
+    private val reversedTransaction = getReversedTransactions()
 
     fun getCurrentBalance(accountId: String, startDate: LocalDateTime, endDate: LocalDateTime)= runBlocking {
         logger.debug { "getCurrentBalance(accountId=$accountId,startDate=$startDate,endDate=$endDate)" }
         check(startDate <= endDate) { "start date $startDate is after end date $endDate" }
         logger.info { "Start Processing Balance for AccountId=$accountId" }
 
-        val transactionForAccountInTimeFrame = getTransactionForTimeFrame(startDate, endDate,
-                        getReversedTransactions(accountId))
+        val transactionForAccountInTimeFrame = getTransactionForTimeFrame(startDate, endDate)
 
         logger.info { "found ${transactionForAccountInTimeFrame.size} matching transactions" }
 
@@ -57,20 +57,20 @@ class TransactionListQuery(private val transactions: TransactionLines) {
             .map { it.amount.negate() }
     }
 
-    private fun getTransactionForTimeFrame(
-        startDate: LocalDateTime,
-        endDate: LocalDateTime,
-        reversedTransaction: List<String>
-    ): List<TransactionLine> {
+    private fun getTransactionForTimeFrame(startDate: LocalDateTime, endDate: LocalDateTime): List<TransactionLine> {
         return transactions.transactionLines
-            .filter { (it.createAt.isAfter(startDate) && it.createAt.isBefore(endDate)) ||
-                    (it.createAt == startDate || it.createAt == endDate) }
-            .filter { !reversedTransaction.contains(it.transactionId) }
+            .filter { isTransactionInTimeRange(it.createAt, startDate, endDate)
+                    && !reversedTransaction.contains(it.transactionId)}
     }
 
-    private fun getReversedTransactions(accountId: String): List<String> {
+    private fun isTransactionInTimeRange(dateTransactionCreatedAt: LocalDateTime,
+                                         startDate: LocalDateTime,
+                                         endDate: LocalDateTime) =
+        (dateTransactionCreatedAt.isAfter(startDate) && dateTransactionCreatedAt.isBefore(endDate)) ||
+            (dateTransactionCreatedAt == startDate || dateTransactionCreatedAt == endDate)
+
+    private fun getReversedTransactions(): List<String> {
         return transactions.transactionLines
-            .filter { it.fromAccountId == accountId }
             .filter { it.transactionType == TransactionType.REVERSAL }
             .map { it.relatedTransaction }
     }

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.TestInstance
 import java.time.LocalDateTime
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class StringExtentionTest {
+class StringExtensionTest {
 
     @Test
     fun `string should be transformed to date`() {
