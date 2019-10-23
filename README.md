@@ -8,6 +8,7 @@
 
 
 <a name="runAndBuild"/>
+
 ### Local Env And Building
 
 * Using `Docker` and `docker-compose`
@@ -28,7 +29,8 @@
     * using gradle `./gradlew clean test`
     * using docker `docker-compose run test`
     * using intelij or any other IDE
-<a name="further"/>    
+<a name="further"/>   
+ 
 ### Further Work
 in order to not over engineering the task i avoided demonstrated possible features such as
 1. exporting the date format to a property file
