@@ -1,5 +1,6 @@
 package transactions.reader
 
+import extention.toDate
 import mu.KotlinLogging
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
@@ -9,13 +10,10 @@ import transactions.entity.TransactionType
 import transactions.reader.CSVTransactionReader.Columns.*
 import java.io.StringReader
 import java.math.BigDecimal
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class CSVTransactionReader(fileLines : String) : TransactionInputReader {
     private val logger = KotlinLogging.logger {}
 
-    private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss") //TODO: move to property
 
     private val csvParser = CSVParser(StringReader(fileLines),
             CSVFormat.DEFAULT.withFirstRecordAsHeader()
@@ -44,7 +42,7 @@ class CSVTransactionReader(fileLines : String) : TransactionInputReader {
         TransactionType.valueOf(transactionType)
 
     private fun parseDate(dateAsString: String) =
-        LocalDateTime.parse(dateAsString.trim() , formatter)
+        dateAsString.toDate()
 
 
     enum class Columns(val col : String) {

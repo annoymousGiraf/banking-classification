@@ -1,23 +1,21 @@
 package application
 
+import extention.toDate
 import transactions.query.TransactionListQuery
 import transactions.reader.InputReaderFactory
 import java.io.File
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import kotlin.system.exitProcess
 
-private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss") //TODO: move to property
 
 fun main(args : Array<String>)  {
-   check(args.size >= 4) {
+   check(args.size == 4) {
        println("Usage: <input_file> <account_id> <start_date> <end_date>")
        exitProcess(1)
    }
     val filePath = args[0]
     val accountId = args[1]
-    val startDate = LocalDateTime.parse(args[2], formatter)
-    val endDate =  LocalDateTime.parse(args[3], formatter)
+    val startDate = args[2].toDate()
+    val endDate =  args[3].toDate()
 
     val inputReader = InputReaderFactory.of(File(filePath))
 
@@ -26,4 +24,5 @@ fun main(args : Array<String>)  {
     val balance = transactionListQuery.getCurrentBalance(accountId,startDate,endDate)
 
     println(balance)
+    exitProcess(0)
 }
