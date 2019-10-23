@@ -1,0 +1,15 @@
+matrix:
+  include:
+    - language: java
+      jdk:
+        - oraclejdk8
+cache:
+  directories:
+    - "$HOME/.m2"
+    - "$HOME/.gradle"
+    - "~/.gradle"
+before_install:
+  - chmod +x gradlew
+script:
+  - "./ops/test.sh"
+  - "docker-compose run build"
