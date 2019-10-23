@@ -54,6 +54,8 @@ in order to not over engineering the task i avoided demonstrated possible featur
 3. supporting json file - though it is super easy with the given design
 4. adding test coverage tool.
 5. Improve basic logger.
+6. ArgParser could be utilized
+
 
 <a name="diagram"/>
 
