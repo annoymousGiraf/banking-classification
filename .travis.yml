@@ -21,4 +21,4 @@ jobs:
   include:
     - stage: test
       name: "run unitests"
-      script: "./gradlew check"
+      script: "./gradlew --info test"
