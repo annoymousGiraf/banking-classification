@@ -1,10 +1,26 @@
-# Banking-Classification Task
+# Banking Classification Task
 
 #### Table of Contents  
 1. [Run And Build](#runAndBuild)  
 2. [Further Work](#further)  
 3. [Basic Diagram](#diagram)  
 4. [Assumptions](#assumptions)  
+
+
+The idea behind the solution is to be lean and elegant, easy to change as we are 
+in the software industry requirements are chaining fast and we need to be able to adjust fast
+for example the task requires to support CSV but in just few lines of code we cam add support to JSON format by adding a Parser and adding 
+type to the Factory. as well as a contract in the form of Interface for InputReader,
+most of the types are generic as it can be to support multiple implementations such as the use
+of Collection rather then just List. the use of Data Classes eases the movement and storage of the parsed data. Excretion function is used to 
+have a syntactic sugar approach of changing string dates to Date data structure but also gives us one place that we can manage the
+Date format, which we can source out to a property file.
+
+in the Transaction Query Service layer Coroutine was used on some calculation in order to allow scaling in larger capacities. 
+such as if we had a Data store in the middle.  
+
+the use of BigDecimal for money calculation was very important to me in order to not lose any cent on the dollar 
+due to data type behavior.   
 
 
 <a name="runAndBuild"/>
