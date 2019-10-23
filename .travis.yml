@@ -9,7 +9,7 @@ cache:
     - "$HOME/.gradle"
     - "~/.gradle"
 before_install:
-  - chmod +x gradlew
+  - chmod a+x gradlew
 script:
   - "./ops/test.sh"
   - "docker-compose run build"
