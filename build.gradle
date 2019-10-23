@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.40'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.50'
 }
 
 group 'banking-classification'
@@ -20,7 +20,7 @@ dependencies {
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.6.1'
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
     compile group: 'org.apache.commons', name: 'commons-csv', version: '1.7'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2'
+    compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2'
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.2")
 }
@@ -29,6 +29,14 @@ test {
     useJUnitPlatform()
 
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'application.ApplicationKt'
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
 
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
