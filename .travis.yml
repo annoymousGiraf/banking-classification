@@ -11,5 +11,4 @@ cache:
 before_install:
   - chmod a+x gradlew
 script:
-  - "./ops/test.sh"
-  - "docker-compose run build"
+  - "./gradlew clean test"
