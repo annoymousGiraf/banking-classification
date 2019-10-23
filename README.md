@@ -1,10 +1,10 @@
 # Banking-Classification Task
 
 #### Table of Contents  
-[Run And Build](#runAndBuild)  
-[Further Work](#further)  
-[Basic Diagram](#diagram)  
-[Assumptions](#assumptions)  
+1. [Run And Build](#runAndBuild)  
+2. [Further Work](#further)  
+3. [Basic Diagram](#diagram)  
+4. [Assumptions](#assumptions)  
 
 
 <a name="runAndBuild"/>
