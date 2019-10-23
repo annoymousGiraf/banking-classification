@@ -1,5 +1,5 @@
 # Banking Classification Task
-
+[![Build Status](https://travis-ci.com/annoymousGiraf/banking-classification.svg?branch=master)](https://travis-ci.com/annoymousGiraf/banking-classification)
 #### Table of Contents  
 1. [Run And Build](#runAndBuild)  
 2. [Further Work](#further)  
